@@ -20,52 +20,52 @@ const optionDefenitions = [
 const description = [
   {
     header: 'REadabe PASSwords GENerator',
-    content: 'Generate passwords which are easy readable and feel like english words.'
+    content: 'Generate passwords which are easy readable and feel like english words.',
   },
   {
     header: 'Synopsis',
     content: [
       '$ repassgen [[bold]{--options} | [bold]{-o}] [underline]{code}',
-      '$ repassgen [[bold]{--help} | [bold]{-h}]'
-    ]
+      '$ repassgen [[bold]{--help} | [bold]{-h}]',
+    ],
   },
   {
     header: 'Options',
     content: [
       {
         option: '[bold]{--help}, [bold]{-h}',
-        description: 'Display this usage guide.'
+        description: 'Display this usage guide.',
       },
       {
         option: '[bold]{--options}, [bold]{-o} [underline]{code}',
-        description: `${optionsDescription}`
-      }
-    ]
+        description: `${optionsDescription}`,
+      },
+    ],
   },
   {
     header: 'Examples',
     content: [
       {
         desc: '1. Generate 1 password with only lowercase letters and length of 6:',
-        example: '$ repassgen -o 1a6'
+        example: '$ repassgen -o 1a6',
       },
       {
         desc: '2. Generate 10 passwords with lowercase and uppercase letters and numbers and length of 8:',
-        example: '$ repassgen 10N8'
+        example: '$ repassgen 10N8',
       },
       {
         desc: '3. Display usage guide:',
-        example: '$ repassgen -h'
+        example: '$ repassgen -h',
       },
       {
         desc: '4. Also will display usage guide:',
-        example: '$ repassgen'
-      }
-    ]
+        example: '$ repassgen',
+      },
+    ],
   },
   {
-    content: 'Project page: [underline]{https://github.com/iskaldvind/repassgen}'
-  }
+    content: 'Project page: [underline]{https://github.com/iskaldvind/repassgen}',
+  },
 ];
 
 const usage = getUsage(description);
@@ -73,8 +73,8 @@ const usage = getUsage(description);
 const options = commandLineArgs(optionDefenitions);
 
 const repassgen = () => {
-  if (!options['help'] && Object.keys(options).length > 0) {
-    generate(options, data)
+  if (!options.help && Object.keys(options).length > 0) {
+    generate(options, data);
   } else {
     console.log(usage);
   }
