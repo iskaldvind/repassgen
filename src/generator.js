@@ -34,7 +34,7 @@ const getFunctionsToAppply = (options, replacementsPerType) =>
 
 const modify = (options, password) => {
   const replacementsPerType = Math.max(minComplexifyReplacementsPerType,
-    password.length * complexityRate);
+    Math.floor(password.length * complexityRate));
   const functionsToApplySequence = getFunctionsToAppply(options, replacementsPerType);
   if (functionsToApplySequence.length === 0) {
     return password;
