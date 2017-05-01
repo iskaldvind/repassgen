@@ -69,14 +69,43 @@ const description = [
 ];
 
 const usage = getUsage(description);
+const args = commandLineArgs(optionDefenitions);
+const validOptionsRegEx = /\b([1-9]+[0-9]*)([aAnNsSfF])([1-9]+[0-9]*)\b/;
 
-const options = commandLineArgs(optionDefenitions);
+const parseGenOptions = () => {
+  const optionsCode = args.options;
+  const parsedOptions = validOptionsRegEx.exec(optionsCode);
+  if (!parsedOptions || parsedOptions[3] < 6) {
+    return { err: 'Invalid options. Please run "repassgen -h" to see usage guide.\n', options: {} };
+  }
+  return {
+    err: '',
+    genOptions: {
+      amount: parsedOptions[1],
+      complexity: parsedOptions[2],
+      length: parsedOptions[3],
+    },
+  };
+};
+
+const displayUsage = () => {
+  console.log(usage);
+};
+
+const displayError = (error) => {
+  console.log(`Error: ${error}`);
+};
 
 const repassgen = () => {
-  if (!options.help && Object.keys(options).length > 0) {
-    generate(options, data);
+  if (args.help || Object.keys(args).length === 0) {
+    displayUsage();
   } else {
-    console.log(usage);
+    const { err, genOptions } = parseGenOptions();
+    if (!err) {
+      generate(genOptions, data);
+    } else {
+      displayError(err);
+    }
   }
 };
 
