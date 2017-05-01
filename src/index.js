@@ -81,9 +81,9 @@ const parseGenOptions = () => {
   return {
     err: '',
     genOptions: {
-      amount: parsedOptions[1],
-      complexity: parsedOptions[2],
-      length: parsedOptions[3],
+      passAmount: parsedOptions[1],
+      passComplexity: parsedOptions[2],
+      passLength: parsedOptions[3],
     },
   };
 };
