@@ -3,6 +3,7 @@ import getUsage from 'command-line-usage';
 import generate from './generator';
 
 const jsonData = require('./base.json');
+
 const data = jsonData;
 
 const optionsDescription =
@@ -12,8 +13,8 @@ const optionsDescription =
          a - 'abcd', A - 'aBcD', n - 'a2c4', N - 'a2C4', s - 'a@c$', S - 'a@C$', f - 'a2c$', F - 'a2C$';
     3* - integer length of passwords to generate (min 6).`;
 const optionDefenitions = [
-  { name: 'help', alias: 'h', type: Boolean},
-  { name: 'options', alias: 'o', type: String, defaultOption: true},
+  { name: 'help', alias: 'h', type: Boolean },
+  { name: 'options', alias: 'o', type: String, defaultOption: true },
 ];
 
 const description = [
@@ -73,9 +74,10 @@ const options = commandLineArgs(optionDefenitions);
 
 const repassgen = () => {
   if (!options['help'] && Object.keys(options).length > 0) {
-    return generate(options, data)
+    generate(options, data)
+  } else {
+    console.log(usage);
   }
-  console.log(usage);
 };
 
 export default repassgen;
