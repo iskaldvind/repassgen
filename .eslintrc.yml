@@ -22,6 +22,7 @@ rules:
     no-console: 0
     import/no-extraneous-dependencies: "error"
     import/unambiguous: "off"
+    import/no-unresolved: "never"
 
 settings:
   import/resolver:
