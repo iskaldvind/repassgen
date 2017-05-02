@@ -1,11 +1,6 @@
 ---
-plugins:
-  - import
 
 extends:
-  - eslint:recommended
-  - plugin:import/errors
-  - plugin:import/warnings
   - 'airbnb-base'
 
 env:
@@ -20,11 +15,3 @@ parserOptions:
 
 rules:
     no-console: 0
-    import/no-extraneous-dependencies: 1
-    import/unambiguous: 1
-    import/no-unresolved: 1
-
-settings:
-  import/resolver:
-    node:
-      paths: [ src ]
