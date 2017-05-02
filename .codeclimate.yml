@@ -8,4 +8,4 @@ exclude_paths:
 - "node_modules/"
 ratings:
    paths:
-   - "src/*"
+   - "src/**"
