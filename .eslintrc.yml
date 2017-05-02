@@ -20,7 +20,7 @@ parserOptions:
 
 rules:
     no-console: 0
-    import/no-extraneous-dependencies: 2
+    import/no-extraneous-dependencies: 1
     import/unambiguous: 1
     import/no-unresolved: 1
 
