@@ -20,9 +20,9 @@ parserOptions:
 
 rules:
     no-console: 0
-    import/no-extraneous-dependencies: "error"
-    import/unambiguous: "off"
-    import/no-unresolved: "never"
+    import/no-extraneous-dependencies: 2
+    import/unambiguous: 1
+    import/no-unresolved: 1
 
 settings:
   import/resolver:
