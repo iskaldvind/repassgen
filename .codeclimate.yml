@@ -6,5 +6,3 @@ engines:
       - javascript
 exclude_paths:
 - "node_modules/"
-- "src/data/"
-- "repassgen/data"
