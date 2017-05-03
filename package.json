@@ -24,7 +24,8 @@
   "dependencies": {
     "command-line-args": "*",
     "command-line-usage": "*",
-    "seedrandom": "*"
+    "seedrandom": "*",
+    "async": "*"
   },
   "devDependencies": {
     "babel-cli": "*",
@@ -37,6 +38,7 @@
     "babel-eslint": "*",
     "command-line-args": "*",
     "command-line-usage": "*",
-    "seedrandom": "*"
+    "seedrandom": "*",
+    "async": "*"
   }
 }
