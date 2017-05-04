@@ -2,64 +2,49 @@ import * as Random from './tools/random';
 
 const maxGenerationTries = 100;
 
-function Gen
-
-const buildInitialSequence = (data) => {
-  const head = Random.choice(['vovels', 'consonants']) === 'vovels' ?
-    Random.choice(Object.keys(data).filter(key => key !== '_')) :
-    '_';
-  const content = Random.choice(data[head]);
-  const goodHead = head === '_' ? '' : head;
-  const body = content[0];
-  const tail = content[1];
-  return [`${goodHead}${body}${tail}`, tail];
+const initSequence = (genData) => {
+  const initialHead = Random.choice(['vovels', 'consonants']) === 'vovels' ?
+    Random.choice(Object.keys(genData).filter(key => key !== '_')) : '_';
+  const initialContent = Random.choice(genData[initialHead]);
+  const initialNoDashHead = initialHead !== '_' ? initialHead : '';
+  const [initialBody, initialTail] = [...initialContent];
+  const initialSequence = `${initialNoDashHead}${initialBody}${initialTail}`;
+  return [initialSequence, initialTail];
 };
 
-const sequenceBuildIter = (options, data, triesLeft = maxGenerationTries, sequence, tail) => {
-  if (triesLeft === 0) {
-    return { err: `Unable to build password for ${maxGenerationTries} tries. Please report to the project page.`, password: '' };
+const buildSequence = (genData, requiredLength, previousSequence = '', previousSequenceTail = '') => {
+  const [currentSequence, currentSequenceTail] = previousSequence.length ?
+    [previousSequence, previousSequenceTail] : initSequence();
+  if (!genData[currentSequenceTail]) {
+    return { isFailed: true, sequence: '' };
   }
-  const [currentSequence, currentTail] = sequence ?
-    [sequence, tail] : buildInitialSequence(data);
-  if (Object.keys(data).indexOf(currentTail) === -1) {
-    return sequenceBuildIter(options, data, triesLeft - 1);
+  if (currentSequence.length >= requiredLength) {
+    const trimmedSequence = currentSequence.slice(0, requiredLength);
+    return { isFailed: false, sequence: trimmedSequence };
   }
-  const nextContent = Random.choice(data[currentTail]);
-  const nextBody = nextContent[0];
-  const nextTail = nextContent[1];
+  const nextContent = Random.choice(genData[currentSequenceTail]);
+  const [nextBody, nextTail] = [...nextContent];
   const nextSequence = `${currentSequence}${nextBody}${nextTail}`;
-  if (nextSequence.length >= options.passLength) {
-    return { err: '', password: nextSequence.slice(0, options.passLength) };
-  }
-  return sequenceBuildIter(options, data, triesLeft, nextSequence, nextTail);
+  return buildSequence(genData, requiredLength, nextSequence, nextTail);
 };
 
-const generateIter = (options, data, amountLeft, passwords = []) => {
-  if (amountLeft === 0) {
-    return { err: '', passwords };
+const generatePassword = (genData, requiredLength, triesLeft) => {
+  if (!triesLeft) {
+    throw new Error('Generator Error: ', `Unable to generate password in ${maxGenerationTries} tries.`);
   }
-  const genResult = sequenceBuildIter(options, data);
-  if (genResult.err) {
-    return { err: genResult.err, passwords: [] };
+  const { isFailed, sequence } = buildSequence(genData, requiredLength);
+  if (isFailed) {
+    const nextTriesLeft = triesLeft - 1;
+    return generatePassword(genData, requiredLength, nextTriesLeft);
   }
-  const nextAmount = amountLeft ? amountLeft - 1 : options.passAmount - 1;
-  const nextPasswords = [...passwords, genResult.password];
-  return generateIter(options, data, nextAmount, nextPasswords);
+  return sequence;
 };
 
-const generator = (options, data) => {
-  const passwordsGenerationResult = generateIter(options, data);
-  if (passwordsGenerationResult.err) {
-    return `Error: ${passwordsGenerationResult.err}`;
+const generate = (genData, requiredLength) => {
+  if (!genData || Object.keys(genData).length === 0) {
+    throw new Error('Generator Error: ', 'Generation database not available or empty.');
   }
-  const complexifiedPasswords = passwordsGenerationResult.passwords
-    .map(password => modify(options, password));
-  const refinedPasswords = complexifiedPasswords.map(password => refine(password));
-  return refinedPasswords.reduce((acc, password) => `${acc}${password}\n`, '');
-};
-
-const generate = (requiredLength, genData) => {
-
+  return generatePassword(genData, requiredLength, maxGenerationTries);
 };
 
 export default generate;
