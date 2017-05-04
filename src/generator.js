@@ -14,7 +14,7 @@ const initSequence = (genData) => {
 
 const buildSequence = (genData, requiredLength, previousSequence = '', previousSequenceTail = '') => {
   const [currentSequence, currentSequenceTail] = previousSequence.length ?
-    [previousSequence, previousSequenceTail] : initSequence();
+    [previousSequence, previousSequenceTail] : initSequence(genData);
   if (!genData[currentSequenceTail]) {
     return { isFailed: true, sequence: '' };
   }
