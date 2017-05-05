@@ -2,7 +2,6 @@ import commandLineArgs from 'command-line-args';
 import getUsage from 'command-line-usage';
 import generate from './generator';
 import complexify from './complicator';
-import multithread from './tools/multithread';
 
 const jsonData = require('./base.json');
 
@@ -91,21 +90,22 @@ const displayUsage = () => console.log(usage);
 
 const displayError = error => console.log(`${error.name}${error.message}`);
 
-const displayResult = result => console.log(result);
-
 const repassgen = () => {
   if (args.help || Object.keys(args).length === 0) {
     return displayUsage();
   }
-  try {
-    const options = parseGenOptions();
-    const threads = new Array(options.passAmount);
-    const passwords = multithread(threads, generate, data, options.passLength);
-    const complexPasswords = multithread(passwords, complexify, options.passComplexity);
-    return displayResult(complexPasswords.join('\n'));
-  } catch (err) {
-    return displayError(err);
-  }
+  const options = parseGenOptions();
+  const threads = new Array(options.passAmount);
+  const generatePasswordPromise = () => new Promise((resolve, reject) => {
+    try {
+      const password = complexify(options.passComplexity, generate(data, options.passLength));
+      resolve(password);
+    } catch (err) {
+      reject(err);
+    }
+  });
+  return Promise.all(threads.map(() => generatePasswordPromise()))
+    .then(passwords => console.log(passwords.join('\n')), error => displayError(error));
 };
 
 export default repassgen;
