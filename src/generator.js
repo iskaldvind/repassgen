@@ -2,42 +2,42 @@ import * as Random from './tools/random';
 
 const maxGenerationTries = 100;
 
-const initSequence = (genData) => {
+const initWord = (genData) => {
   const initialHead = Random.choice(['vovels', 'consonants']) === 'vovels' ?
     Random.choice(Object.keys(genData).filter(key => key !== '_')) : '_';
   const initialContent = Random.choice(genData[initialHead]);
   const initialNoDashHead = initialHead !== '_' ? initialHead : '';
   const [initialBody, initialTail] = [...initialContent];
-  const initialSequence = `${initialNoDashHead}${initialBody}${initialTail}`;
-  return [initialSequence, initialTail];
+  const initialWord = `${initialNoDashHead}${initialBody}${initialTail}`;
+  return [initialWord, initialTail];
 };
 
-const buildSequence = (genData, requiredLength, previousSequence = '', previousSequenceTail = '') => {
-  const [currentSequence, currentSequenceTail] = previousSequence.length ?
-    [previousSequence, previousSequenceTail] : initSequence(genData);
-  if (!genData[currentSequenceTail]) {
-    return { isFailed: true, sequence: '' };
+const buildWord = (genData, requiredLength, previousWord = '', previousWordTail = '') => {
+  const [currentWord, currentWordTail] = previousWord.length ?
+    [previousWord, previousWordTail] : initWord(genData);
+  if (!genData[currentWordTail]) {
+    return { isFailed: true, word: '' };
   }
-  if (currentSequence.length >= requiredLength) {
-    const trimmedSequence = currentSequence.slice(0, requiredLength);
-    return { isFailed: false, sequence: trimmedSequence };
+  if (currentWord.length >= requiredLength) {
+    const trimmedWord = currentWord.slice(0, requiredLength);
+    return { isFailed: false, word: trimmedWord };
   }
-  const nextContent = Random.choice(genData[currentSequenceTail]);
+  const nextContent = Random.choice(genData[currentWordTail]);
   const [nextBody, nextTail] = [...nextContent];
-  const nextSequence = `${currentSequence}${nextBody}${nextTail}`;
-  return buildSequence(genData, requiredLength, nextSequence, nextTail);
+  const nextWord = `${currentWord}${nextBody}${nextTail}`;
+  return buildWord(genData, requiredLength, nextWord, nextTail);
 };
 
 const generatePassword = (genData, requiredLength, triesLeft) => {
   if (!triesLeft) {
     throw new Error('Generator Error: ', `Unable to generate password in ${maxGenerationTries} tries.`);
   }
-  const { isFailed, sequence } = buildSequence(genData, requiredLength);
+  const { isFailed, word } = buildWord(genData, requiredLength);
   if (isFailed) {
     const nextTriesLeft = triesLeft - 1;
     return generatePassword(genData, requiredLength, nextTriesLeft);
   }
-  return sequence;
+  return word;
 };
 
 const generate = (genData, requiredLength) => {

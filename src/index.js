@@ -1,6 +1,8 @@
 import commandLineArgs from 'command-line-args';
 import getUsage from 'command-line-usage';
 import generate from './generator';
+import complexify from './complicator';
+import multithread from './tools/multithread';
 
 const jsonData = require('./base.json');
 
@@ -76,36 +78,33 @@ const parseGenOptions = () => {
   const optionsCode = args.options;
   const parsedOptions = validOptionsRegEx.exec(optionsCode);
   if (!parsedOptions || parsedOptions[3] < 6) {
-    return { err: 'Invalid options. Please run "repassgen -h" to see usage guide.\n', options: {} };
+    throw new Error('Parser Error: ', 'Invalid options. Please run "repassgen -h" to see usage guide.');
   }
   return {
-    err: '',
-    genOptions: {
-      passAmount: parsedOptions[1],
-      passComplexity: parsedOptions[2],
-      passLength: parsedOptions[3],
-    },
+    passAmount: parsedOptions[1],
+    passComplexity: parsedOptions[2],
+    passLength: parsedOptions[3],
   };
 };
 
-const displayUsage = () => {
-  console.log(usage);
-};
+const displayUsage = () => console.log(usage);
 
-const displayError = (error) => {
-  console.log(`Error: ${error}`);
-};
+const displayError = error => console.log(`${error.name}${error.message}`);
+
+const displayResult = result => console.log(result);
 
 const repassgen = () => {
   if (args.help || Object.keys(args).length === 0) {
-    displayUsage();
-  } else {
-    const { err, genOptions } = parseGenOptions();
-    if (!err) {
-      generate(genOptions, data);
-    } else {
-      displayError(err);
-    }
+    return displayUsage();
+  }
+  try {
+    const options = parseGenOptions();
+    const threads = new Array(options.passAmount);
+    const passwords = multithread(threads, generate, data, options.passLength);
+    const complexPasswords = multithread(passwords, complexify, options.passComplexity);
+    return displayResult(complexPasswords.join('\n'));
+  } catch (err) {
+    return displayError(err);
   }
 };
 

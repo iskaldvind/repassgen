@@ -1,5 +1,4 @@
 import * as Random from './tools/random';
-import {serial} from './tools/multifunctions';
 
 const minComplexifyReplacementsPerType = 1;
 const complexityRate = 0.1;
@@ -30,14 +29,19 @@ const inflateArray = (set, repeatEach, repeatCurrent, acc) => {
   return inflateArray(set, repeatEach, repeatCurrent - 1, [...acc, set[0]]);
 };
 
-const getFunctionsQueue = (options, numberOfEarch) => {
-  const functionsSet = Object.keys(options).filter(key => !!options[key]);
+const getFunctionsQueue = (complexityCode, numberOfEarch) => {
+  const functionsSetCaps = 'ANSF'.indexOf(complexityCode) !== -1 ? [caps] : [];
+  const functionsSetNums = 'nNfF'.indexOf(complexityCode) !== -1 ? [...functionsSetCaps, nums] : functionsSetCaps;
+  const functionsSetSyms = 'sSfF'.indexOf(complexityCode) !== -1 ? [...functionsSetNums, syms] : functionsSetNums;
   const newQueue = [];
-  return inflateArray(functionsSet, numberOfEarch, numberOfEarch, newQueue);
+  return inflateArray(functionsSetSyms, numberOfEarch, numberOfEarch, newQueue);
 };
 
-const modify = (word, options) => {
-  const functionsQueue = getFunctionsQueue(options, numberOfSubstitutions(word.length));
+const modify = (word, complexityCode) => {
+  const functionsQueue = getFunctionsQueue(complexityCode, numberOfSubstitutions(word.length));
+  if (!functionsQueue.length) {
+    return word;
+  }
   const splittedWord = word.split('').reduce((acc, letter) => [...acc, [acc.length, 'um', letter]], []);
   const modifiedSplittedWord = functionsQueue.reduce((symbolData, appliedFunction) => {
     const unmodifiedLettersIndices = symbolData.reduce((acc, entry) => {
@@ -55,11 +59,15 @@ const modify = (word, options) => {
   return modifiedSplittedWord.map(record => record[2]).join('');
 };
 
-const complexify = (word, options = { caps: false, nums: false, syms: false }) => {
+const complexify = (complexityCode, word) => {
+  if (!complexityCode || typeof complexityCode !== 'string') {
+    throw new Error('Complicator Error: ', 'No valid complexity code provided.');
+  }
   if (!word || typeof word !== 'string') {
     throw new Error('Complicator Error: ', 'No valid string to complexify provided.');
   }
-  return modify(word, options);
+  const modifiedWord = modify(word, complexityCode);
+  return refine(modifiedWord);
 };
 
-export default  complexify;
+export default complexify;
