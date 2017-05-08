@@ -44,6 +44,9 @@ const generate = (genData, requiredLength) => {
   if (!genData || Object.keys(genData).length === 0) {
     throw new Error('Generator Error: Generation database not available or empty.');
   }
+  if (!(Number.isInteger(requiredLength)) || !requiredLength || requiredLength < 6) {
+    throw new Error('Generator Error: Wrong or absent required length value.');
+  }
   return generatePassword(genData, requiredLength, maxGenerationTries);
 };
 
