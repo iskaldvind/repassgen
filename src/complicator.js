@@ -16,7 +16,7 @@ const refine = password => password.split('').map((symbol) => {
 }).join('');
 
 const numberOfSubstitutions = word =>
-  Math.min(word.length * complexityRate, minComplexifyReplacementsPerType);
+  Math.max(Math.floor(word.length * complexityRate), minComplexifyReplacementsPerType);
 
 const inflateArray = (set, repeatEach, repeatCurrent, acc) => {
   if (set.length === 0) {
@@ -38,7 +38,7 @@ const getFunctionsQueue = (complexityCode, numberOfEarch) => {
 };
 
 const modify = (word, complexityCode) => {
-  const functionsQueue = getFunctionsQueue(complexityCode, numberOfSubstitutions(word.length));
+  const functionsQueue = getFunctionsQueue(complexityCode, numberOfSubstitutions(word));
   if (!functionsQueue.length) {
     return word;
   }
@@ -60,11 +60,11 @@ const modify = (word, complexityCode) => {
 };
 
 const complexify = (complexityCode, word) => {
-  if (!complexityCode || typeof complexityCode !== 'string') {
-    throw new Error('Complicator Error: ', 'No valid complexity code provided.');
+  if (!complexityCode || typeof complexityCode !== 'string' || 'aAnNsSfF'.indexOf(complexityCode) === -1) {
+    throw new Error('Complicator Error: No valid complexity code provided.');
   }
-  if (!word || typeof word !== 'string') {
-    throw new Error('Complicator Error: ', 'No valid string to complexify provided.');
+  if (!word || typeof word !== 'string' || word.length < 3) {
+    throw new Error('Complicator Error: No valid string to complexify provided.');
   }
   const modifiedWord = modify(word, complexityCode);
   return refine(modifiedWord);

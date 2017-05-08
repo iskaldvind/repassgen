@@ -30,7 +30,7 @@ const buildWord = (genData, requiredLength, previousWord = '', previousWordTail 
 
 const generatePassword = (genData, requiredLength, triesLeft) => {
   if (!triesLeft) {
-    throw new Error('Generator Error: ', `Unable to generate password in ${maxGenerationTries} tries.`);
+    throw new Error(`Generator Error: Unable to generate password in ${maxGenerationTries} tries.`);
   }
   const { isFailed, word } = buildWord(genData, requiredLength);
   if (isFailed) {
@@ -42,7 +42,7 @@ const generatePassword = (genData, requiredLength, triesLeft) => {
 
 const generate = (genData, requiredLength) => {
   if (!genData || Object.keys(genData).length === 0) {
-    throw new Error('Generator Error: ', 'Generation database not available or empty.');
+    throw new Error('Generator Error: Generation database not available or empty.');
   }
   return generatePassword(genData, requiredLength, maxGenerationTries);
 };
