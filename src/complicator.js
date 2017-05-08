@@ -5,7 +5,7 @@ const complexityRate = 0.1;
 
 const caps = letter => letter.toUpperCase();
 const nums = () => Random.choice(['2', '3', '4', '6', '7', '8', '9']);
-const syms = () => Random.choice(['!', '@', '#', '$', '%', '^', '&', '*', '-', '+', '?']);
+const syms = () => Random.choice(['!', '@', '#', '$', '%', '^', '&', '*', '-', '+', '=', '?']);
 const refineMatrix = { l: ['n', 'm'], S: ['H', 'F'], I: ['A', 'E', 'U'], O: ['A', 'E', 'U'] };
 
 const refine = password => password.split('').map((symbol) => {

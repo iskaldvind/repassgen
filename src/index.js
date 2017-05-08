@@ -77,7 +77,7 @@ const parseGenOptions = () => {
   const optionsCode = args.options;
   const parsedOptions = validOptionsRegEx.exec(optionsCode);
   if (!parsedOptions || parsedOptions[3] < 6) {
-    throw new Error('Parser Error: ', 'Invalid options. Please run "repassgen -h" to see usage guide.');
+    throw new Error('Parser Error: Invalid options. Please run "repassgen -h" to see usage guide.');
   }
   return {
     passAmount: parsedOptions[1],
@@ -88,17 +88,23 @@ const parseGenOptions = () => {
 
 const displayUsage = () => console.log(usage);
 
-const displayError = error => console.log(`${error.name}${error.message}`);
+const displayError = error => console.log(`${error.message}`);
 
 const repassgen = () => {
   if (args.help || Object.keys(args).length === 0) {
     return displayUsage();
   }
+  try {
+    parseGenOptions();
+  } catch (err) {
+    return displayError(err);
+  }
   const options = parseGenOptions();
-  const threads = new Array(options.passAmount);
+  const threads = new Array(Number(options.passAmount) + 1).join('x').split('');
   const generatePasswordPromise = () => new Promise((resolve, reject) => {
     try {
-      const password = complexify(options.passComplexity, generate(data, options.passLength));
+      const password =
+        complexify(options.passComplexity, generate(data, Number(options.passLength)));
       resolve(password);
     } catch (err) {
       reject(err);

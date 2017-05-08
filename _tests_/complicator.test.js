@@ -35,24 +35,24 @@ test('Complexify: if code is "N" should have some symbols from "ABCDEFG" and "23
   expect(complexify('N', 'abcdefg')).toStrIntersect('2346789');
 });
 
-test('Complexify: if code is "s" should have some symbols from "!@#$%^&*-=?"', () => {
-  expect(complexify('s', 'abcdefg')).toStrIntersect('!@#$%^&*-=?');
+test('Complexify: if code is "s" should have some symbols from "!@#$%^&*-+=?"', () => {
+  expect(complexify('s', 'abcdefg')).toStrIntersect('!@#$%^&*-+=?');
 });
 
 test('Complexify: if code is "S" should have some symbols from "ABCDEFG" and "!@#$%^&*-=?"', () => {
   expect(complexify('S', 'abcdefg')).toStrIntersect('ABCDEFG');
-  expect(complexify('S', 'abcdefg')).toStrIntersect('!@#$%^&*-=?');
+  expect(complexify('S', 'abcdefg')).toStrIntersect('!@#$%^&*-+=?');
 });
 
 test('Complexify: if code is "f" should have some symbols from "2346789" and "!@#$%^&*-=?"', () => {
   expect(complexify('f', 'abcdefg')).toStrIntersect('2346789');
-  expect(complexify('f', 'abcdefg')).toStrIntersect('!@#$%^&*-=?');
+  expect(complexify('f', 'abcdefg')).toStrIntersect('!@#$%^&*-+=?');
 });
 
 test('Complexify: if code is "f" should have some symbols from "2346789" and "!@#$%^&*-=?"', () => {
   expect(complexify('F', 'abcdefg')).toStrIntersect('ABCDEFG');
   expect(complexify('F', 'abcdefg')).toStrIntersect('2346789');
-  expect(complexify('F', 'abcdefg')).toStrIntersect('!@#$%^&*-=?');
+  expect(complexify('F', 'abcdefg')).toStrIntersect('!@#$%^&*-+=?');
 });
 
 test('Complexify: must throw an Error if complexity code is invalid', () => {

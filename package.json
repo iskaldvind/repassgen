@@ -1,6 +1,6 @@
 {
   "name": "repassgen",
-  "version": "1.0.5",
+  "version": "1.0.27",
   "description": "'REadable PASSwords GENerator'",
   "bin": {
     "repassgen": "dist/bin/repassgen.js"
@@ -23,14 +23,12 @@
   },
   "homepage": "https://github.com/iskaldvind/repassgen#readme",
   "dependencies": {
-    "async": "*",
     "babel-cli": "^6.24.1",
     "command-line-args": "*",
     "command-line-usage": "*",
     "seedrandom": "*"
   },
   "devDependencies": {
-    "async": "*",
     "babel-cli": "^6.24.1",
     "babel-core": "*",
     "babel-eslint": "*",
