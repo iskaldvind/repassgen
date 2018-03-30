@@ -5,6 +5,9 @@ REadable PASSwords GENerator
 [![Issue Count](https://codeclimate.com/github/iskaldvind/repassgen/badges/issue_count.svg)](https://codeclimate.com/github/iskaldvind/repassgen)
 [![Build Status](https://travis-ci.org/iskaldvind/repassgen.svg?branch=master)](https://travis-ci.org/iskaldvind/repassgen)  
 
+
+<a href="https://koding.com/"> <img src="https://koding-cdn.s3.amazonaws.com/badges/made-with-koding/v1/koding_badge_RectangleLight.png" srcset="https://koding-cdn.s3.amazonaws.com/badges/made-with-koding/v1/koding_badge_RectangleLight.png 1x, https://koding-cdn.s3.amazonaws.com/badges/made-with-koding/v1/koding_badge_RectangleLight@2x.png 2x" alt="Made with Koding" /> </a>
+
 The aim is to generate passwords which are easy readable and feels like english words but meaningless in content.  
   
 ## Install
